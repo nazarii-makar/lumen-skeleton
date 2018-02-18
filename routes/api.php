@@ -1,5 +1,7 @@
 <?php
 
+use Dingo\Api\Routing\Router;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,6 +13,18 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+/** @var Router $router */
+$router = app(Dingo\Api\Routing\Router::class);
+
+$router->version(env('API_VERSION'), function (Router $router) {
+
+    $router->get('/', function () {
+        return response()->json([
+            'state' => 0,
+            'data'  => [
+                'version' => env('API_VERSION'),
+            ],
+        ]);
+    });
+
 });
