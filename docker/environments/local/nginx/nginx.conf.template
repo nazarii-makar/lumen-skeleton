@@ -1,0 +1,104 @@
+worker_processes ${NGINX_WORKER_PROCESSES};
+pid /run/nginx.pid;
+
+load_module modules/ngx_http_image_filter_module.so;
+
+events {
+    worker_connections ${NGINX_WORKER_CONNECTIONS};
+    use epoll;
+    multi_accept on;
+}
+
+http {
+
+    ##
+    # Basic Settings
+    ##
+
+    sendfile on;
+    server_tokens off;
+    types_hash_max_size 2048;
+
+    ##
+    # TCP
+    ##
+
+    tcp_nopush on;
+    tcp_nodelay on;
+
+
+    ##
+    # Keep Alive
+    ##
+
+    keepalive_timeout 75s;
+    keepalive_requests 1000;
+    reset_timedout_connection on;
+
+    ##
+    # Timeout
+    ##
+
+    client_body_timeout 10s;
+    send_timeout 2s;
+
+    ##
+    # Proxy
+    ##
+
+    proxy_http_version 1.1;
+
+    ##
+    # SSL Settings
+    ##
+
+    ssl_dhparam /etc/nginx/dhparam.pem;
+    ssl_prefer_server_ciphers on;
+    ssl_session_tickets off;
+    ssl_session_timeout 10m;
+    ssl_session_cache shared:SSL:10m;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver 8.8.4.4 8.8.8.8 valid=300s;
+    resolver_timeout 10s;
+    ssl_ecdh_curve secp384r1;
+    ssl_ciphers "HIGH:!aNULL:!MD5:!3DES:!CAMELLIA:!AES128";
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+    ##
+    # Headers
+    ##
+
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header Strict-Transport-Security "max-age=15768000;";
+
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    ##
+    # Logging Settings
+    ##
+
+    access_log off;
+    error_log /var/log/nginx/error.log crit;
+
+    ##
+    # Gzip Settings
+    ##
+
+    gzip on;
+    gzip_min_length 1000;
+    gzip_disable "msie6";
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_http_version 1.1;
+    gzip_types *;
+
+    ##
+    # Virtual Host Configs
+    ##
+
+    include /etc/nginx/conf.d/*.conf;
+}

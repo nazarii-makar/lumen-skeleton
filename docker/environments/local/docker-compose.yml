@@ -1,0 +1,70 @@
+version: '3.5'
+services:
+    nginx:
+        container_name: ${NGINX_HOST}
+        image: nginx:alpine
+        working_dir: /var/www/eservia/booking/
+        volumes:
+            - ./nginx/nginx.conf.template:/etc/nginx/nginx.conf.template
+            - ./nginx/conf.d/booking.conf.template:/etc/nginx/conf.d/booking.conf.template
+            - ./../../../storage/logs/nginx/:/var/log/nginx/
+            - ./../../../:/var/www/eservia/booking/
+        command: /bin/sh -c "envsubst '$${NGINX_WORKER_PROCESSES} $${NGINX_WORKER_CONNECTIONS} $${ROOT_HOST} $${ROOT_PORT} $${PHP_HOST} $${PHP_PORT}' < /etc/nginx/conf.d/booking.conf.template > /etc/nginx/conf.d/booking.conf && envsubst '$${NGINX_WORKER_PROCESSES} $${NGINX_WORKER_CONNECTIONS} $${ROOT_HOST} $${ROOT_PORT} $${PHP_HOST} $${PHP_PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
+        restart: always
+        ports:
+            - 80:80
+            - 443:443
+        env_file:
+            - .env
+        networks:
+            - eservia-booking
+        links:
+            - php-fpm
+            - composer
+        depends_on:
+            - php-fpm
+            - composer
+    php-fpm:
+        container_name: ${PHP_HOST}
+        build: ./../../common/php-fpm
+        working_dir: /var/www/eservia/booking/
+        volumes:
+            - ./php-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini
+            - ./../../../:/var/www/eservia/booking/
+        restart: always
+        ports:
+            - 9000:9000
+        env_file:
+            - .env
+        networks:
+            - eservia-booking
+        links:
+            - mariadb
+        depends_on:
+            - mariadb
+            - composer
+    composer:
+        container_name: ${COMPOSER_HOST}
+        image: "composer"
+        working_dir: /app/
+        volumes:
+            - ./../../../:/app
+        command: bash -c 'composer install && composer update && composer dump-autoload'
+    mariadb:
+        container_name: ${MYSQL_HOST}
+        image: mariadb:${MYSQL_VERSION}
+        working_dir: /var/www/eservia/booking/
+        volumes:
+            - ./../../../storage/app/db/mysql:/var/lib/mysql
+            - ./../../common/mysql/:/docker-entrypoint-initdb.d/
+        restart: always
+        ports:
+            - "3306:3306"
+        env_file:
+            - .env
+        networks:
+            - eservia-booking
+
+networks:
+    eservia-booking:
+      name: eservia-booking
