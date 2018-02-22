@@ -1,6 +1,6 @@
 <?php
 
-use Dingo\Api\Routing\Router;
+use Illuminate\Routing\Router;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,17 +14,11 @@ use Dingo\Api\Routing\Router;
 */
 
 /** @var Router $router */
-$router = app(Dingo\Api\Routing\Router::class);
-
-$router->version(env('API_VERSION'), function (Router $router) {
-
-    $router->get('/', function () {
-        return response()->json([
-            'state' => 0,
-            'data'  => [
-                'version' => env('API_VERSION'),
-            ],
-        ]);
-    });
-
+$router->get('/', function () {
+    return response()->json([
+        'state' => 0,
+        'data'  => [
+            'version' => env('API_VERSION'),
+        ],
+    ]);
 });
