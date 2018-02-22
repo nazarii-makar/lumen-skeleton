@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Routing\Router;
+use Laravel\Lumen\Routing\Router;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +18,7 @@ $router->get('/', function () {
     return response()->json([
         'state' => 0,
         'data'  => [
-            'version' => env('API_VERSION'),
+            'version' => env('APP_VERSION'),
         ],
     ]);
 });
