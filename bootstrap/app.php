@@ -55,11 +55,8 @@ $app->singleton(
 
 $app->middleware([
     Barryvdh\Cors\HandleCors::class,
+    App\Http\Middleware\ETagMiddleware::class,
 ]);
-
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
 
 /*
 |--------------------------------------------------------------------------
@@ -72,16 +69,8 @@ $app->middleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-$app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
-$app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
-
-app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
-    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -119,8 +108,10 @@ foreach ($configs as $config) {
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
-], function ($router) {
-    require __DIR__ . '/../routes/api.php';
+], function (\Laravel\Lumen\Routing\Router $router) {
+    $router->group(['prefix' => 'api'], function ($router) {
+        require __DIR__ . '/../routes/api.php';
+    });
 });
 
 return $app;
