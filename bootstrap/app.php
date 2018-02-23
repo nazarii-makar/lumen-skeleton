@@ -58,6 +58,11 @@ $app->middleware([
     App\Http\Middleware\ETagMiddleware::class,
 ]);
 
+$app->routeMiddleware([
+    'auth'   => App\Http\Middleware\Authenticate::class,
+    'issuer' => App\Http\Middleware\CheckIssuerMiddleware::class,
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -69,6 +74,8 @@ $app->middleware([
 |
 */
 
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 

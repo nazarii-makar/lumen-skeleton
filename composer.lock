@@ -188,7 +188,7 @@
         },
         {
             "name": "illuminate/auth",
-            "version": "v5.6.4",
+            "version": "v5.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/auth.git",
@@ -239,7 +239,7 @@
         },
         {
             "name": "illuminate/broadcasting",
-            "version": "v5.6.4",
+            "version": "v5.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/broadcasting.git",
@@ -289,7 +289,7 @@
         },
         {
             "name": "illuminate/bus",
-            "version": "v5.6.4",
+            "version": "v5.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/bus.git",
@@ -334,7 +334,7 @@
         },
         {
             "name": "illuminate/cache",
-            "version": "v5.6.4",
+            "version": "v5.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/cache.git",
@@ -383,7 +383,7 @@
         },
         {
             "name": "illuminate/config",
-            "version": "v5.6.4",
+            "version": "v5.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/config.git",
@@ -427,7 +427,7 @@
         },
         {
             "name": "illuminate/console",
-            "version": "v5.6.4",
+            "version": "v5.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/console.git",
@@ -477,7 +477,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v5.6.4",
+            "version": "v5.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -521,7 +521,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.6.4",
+            "version": "v5.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
