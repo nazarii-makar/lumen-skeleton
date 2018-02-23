@@ -87,6 +87,56 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | JWT Authentication Keys
+    |--------------------------------------------------------------------------
+    |
+    | The algorithm you are using, will determine whether your tokens are
+    | signed with a random string (defined in `JWT_SECRET`) or using the
+    | following public & private keys.
+    |
+    | Symmetric Algorithms:
+    | HS256, HS384 & HS512 will use `JWT_SECRET`.
+    |
+    | Asymmetric Algorithms:
+    | RS256, RS384 & RS512 / ES256, ES384 & ES512 will use the keys below.
+    |
+    */
+
+    'issuer_keys' => [
+        'example.issuer' => [
+            /*
+            |--------------------------------------------------------------------------
+            | Public Key
+            |--------------------------------------------------------------------------
+            |
+            | A path or resource to your public key.
+            |
+            | E.g. 'file://path/to/public/key'
+            |
+            */
+
+            'public' => 'file:///var/www/eservia/booking/resources/keys/jwt/auth.admin.pub',
+
+            /*
+            |--------------------------------------------------------------------------
+            | JWT Authentication Secret
+            |--------------------------------------------------------------------------
+            |
+            | Don't forget to set this in your .env file, as it will be used to sign
+            | your tokens. A helper command is provided for this:
+            | `php artisan jwt:secret`
+            |
+            | Note: This will be used for Symmetric algorithms only (HMAC),
+            | since RSA and ECDSA use a private/public key combo (See below).
+            |
+            */
+
+            'secret' => 'secret',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | JWT time to live
     |--------------------------------------------------------------------------
     |
@@ -272,7 +322,7 @@ return [
         |
         */
 
-        'jwt' => Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
+        'jwt' => App\Providers\JWT\Lcobucci::class,
 
         /*
         |--------------------------------------------------------------------------
